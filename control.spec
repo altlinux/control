@@ -11,6 +11,7 @@ BuildArch: noarch
 
 Source: %name-%version.tar.gz
 
+Provides: %_sysconfdir/control.d/facilities
 Requires: %__subst
 
 %description
@@ -36,7 +37,7 @@ from package installation.
 (
 	echo '# shell functions provides list'
 	for f in $RPM_BUILD_ROOT%_sysconfdir/control.d/*; do
-		[ -x "$f" ] || continue
+		[ -f "$f" -a -x "$f" ] || continue
 		sed -ne 's/^\([A-Za-z][A-Za-z_0-9]*[[:space:]]*\)()$/\1/pg' "$f"
 	done |LC_COLLATE=C sort -u
 ) >$RPM_BUILD_ROOT%_sysconfdir/control.d/.provides.sh
