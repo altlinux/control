@@ -1,8 +1,8 @@
 # $Id$
 
 Name: control
-Version: 0.6
-Release: alt2
+Version: 0.6.1
+Release: alt1
 
 Summary: A set of scripts to control installed system facilities
 License: GPL
@@ -32,14 +32,32 @@ from package installation.
 %__install -p -m644 control{,-dump,-restore}.8 $RPM_BUILD_ROOT%_man8dir/
 %__install -pD -m644 control.macros $RPM_BUILD_ROOT%_sysconfdir/rpm/macros.d/control
 
+# Generate shell functions provides list.
+(
+	echo '# shell functions provides list'
+	for f in $RPM_BUILD_ROOT%_sysconfdir/control.d/*; do
+		[ -x "$f" ] || continue
+		sed -ne 's/^\([A-Za-z][A-Za-z_0-9]*[[:space:]]*\)()$/\1/pg' "$f"
+	done |LC_COLLATE=C sort -u
+) >$RPM_BUILD_ROOT%_sysconfdir/control.d/.provides.sh
+
 %files
 %config %_sysconfdir/rpm/macros.d/control
 %_sbindir/control*
-%_sysconfdir/control.d
+%config %_sysconfdir/control.d
 /var/run/control
 %_man8dir/*
 
 %changelog
+* Sat Sep 25 2004 Dmitry V. Levin <ldv@altlinux.org> 0.6.1-alt1
+- functions/{new_help,control_help}:
+  new functions for help support.
+- functions/control_list:
+  new function for use by complex facilities.
+- functions/control_fmode:
+  don't change files when the new setting is the same.
+- Packaged %_sysconfdir/control.d/.provides.sh file.
+
 * Wed Oct 29 2003 Dmitry V. Levin <ldv@altlinux.org> 0.6-alt2
 - functions: use colon instead of dot as user/group name
   separator with invocations of chown(1).
