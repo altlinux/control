@@ -11,7 +11,6 @@ BuildArch: noarch
 
 Source: %name-%version.tar.gz
 
-Provides: %_sysconfdir/control.d/facilities
 Requires: %__subst
 
 %description
