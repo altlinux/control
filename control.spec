@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.3.1
+Version: 0.4
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -36,6 +36,11 @@ from package installation.
 /var/run/control
 
 %changelog
+* Sun Nov 03 2002 Dmitry V. Levin <ldv@altlinux.org> 0.4-alt1
+- Synced with owl-control-0.4, including:
+  + minor syntax fixes in control, control-dump and control-restore;
+  + in control_subst(), don't rewrite files when the new setting is the same.
+
 * Sat Oct 12 2002 Dmitry V. Levin <ldv@altlinux.org> 0.3.1-alt1
 - ALT adaptions.
 - Added control-dump and control-restore utilities.
