@@ -98,7 +98,7 @@ control_fmode()
 	list)
 		control_list
 		;;
-	status|'')
+	status)
 		control_fmode_status "$FILE"
 		;;
 	*)
@@ -144,7 +144,7 @@ control_subst()
 	list)
 		control_list
 		;;
-	status|'')
+	status)
 		control_subst_status "$FILE"
 		;;
 	*)
@@ -160,3 +160,15 @@ control_subst()
 		;;
 	esac
 }
+
+is_builtin_mode()
+{
+	case "$1" in
+	help|list|status|'')
+		return 0
+		;;
+	esac
+	return 1
+}
+
+[ -n "$*" ] || set - status
