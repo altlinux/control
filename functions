@@ -56,7 +56,7 @@ stat_file()
 	local PATHNAME="$1" BASEPATH
 
 	BASEPATH="`echo "$PATHNAME" | sed 's,/[^/]*$,,'`"
-	find "$BASEPATH" -path "$PATHNAME" -maxdepth 1 -printf '%m_%u_%g'
+	find "$BASEPATH" -maxdepth 1 -path "$PATHNAME" -printf '%m_%u_%g'
 }
 
 control_list()
