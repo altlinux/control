@@ -11,7 +11,11 @@ for FACILITY in "$@"; do
 		STATUS="`cat "$FILE"`"
 		if [ -n "$STATUS" -a "$STATUS" != unknown ]; then
 			/usr/sbin/control "$FACILITY" "$STATUS"
+		else
+			echo "${0##*/}: status \"$STATUS\" for \"$FACILITY\" facility cannot be restored" >&2
 		fi
+	else
+		echo "${0##*/}: no status available for \"$FACILITY\" facility" >&2
 	fi
 	rm -f "$FILE"
 done
