@@ -2,7 +2,7 @@
 
 Name: control
 Version: 0.6
-Release: alt1
+Release: alt2
 
 Summary: A set of scripts to control installed system facilities
 License: GPL
@@ -25,19 +25,26 @@ from package installation.
 %setup -q
 
 %install
-%__mkdir_p $RPM_BUILD_ROOT{/etc/control.d/facilities,%_sbindir,%_man8dir}
+%__mkdir_p $RPM_BUILD_ROOT{%_sysconfdir/control.d/facilities,%_sbindir,%_man8dir}
 %__install -p -m755 control{,-dump,-restore} $RPM_BUILD_ROOT%_sbindir/
-%__install -p -m755 functions $RPM_BUILD_ROOT/etc/control.d/
+%__install -p -m755 functions $RPM_BUILD_ROOT%_sysconfdir/control.d/
 %__mkdir_p -m700 $RPM_BUILD_ROOT/var/run/control
 %__install -p -m644 control{,-dump,-restore}.8 $RPM_BUILD_ROOT%_man8dir/
+%__install -pD -m644 control.macros $RPM_BUILD_ROOT%_sysconfdir/rpm/macros.d/control
 
 %files
+%config %_sysconfdir/rpm/macros.d/control
 %_sbindir/control*
-/etc/control.d
+%_sysconfdir/control.d
 /var/run/control
 %_man8dir/*
 
 %changelog
+* Wed Oct 29 2003 Dmitry V. Levin <ldv@altlinux.org> 0.6-alt2
+- functions: use colon instead of dot as user/group name
+  separator with invocations of chown(1).
+- Added rpm macros file (#2972).
+
 * Sat Apr 19 2003 Dmitry V. Levin <ldv@altlinux.org> 0.6-alt1
 - Synced with owl-control-0.6:
   * Fri Apr 18 2003 Solar Designer <solar@owl.openwall.com> 0.6-owl1
