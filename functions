@@ -105,6 +105,9 @@ function control_subst()
 			echo "${0##*/}: Invalid mode: $REQUEST" >&2
 			return 1
 		fi
+		if [ "`control_subst "$FILE" status`" = "$REQUEST" ]; then
+			return
+		fi
 		subst "$SUBST" "$FILE" || return 1
 		;;
 	esac
