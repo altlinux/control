@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.5.2
+Version: 0.6
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -38,6 +38,12 @@ from package installation.
 %_man8dir/*
 
 %changelog
+* Sat Apr 19 2003 Dmitry V. Levin <ldv@altlinux.org> 0.6-alt1
+- Synced with owl-control-0.6:
+  * Fri Apr 18 2003 Solar Designer <solar@owl.openwall.com> 0.6-owl1
+  - Avoid *roff commands within .SH NAME to not confuse makewhatis
+    and apropos(1).
+
 * Sat Apr 12 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5.2-alt1
 - control-restore: be more verbose.
 
