@@ -13,6 +13,8 @@ Source: %name-%version.tar.gz
 
 Requires: %__subst
 
+%define _controldir %_sysconfdir/control.d/facilities
+
 %description
 The scripts included in this package provide a common interface to
 control system facilities provided by a number of other packages.
@@ -25,7 +27,7 @@ from package installation.
 %setup -q
 
 %install
-%__mkdir_p $RPM_BUILD_ROOT{%_sysconfdir/control.d/facilities,%_sbindir,%_man8dir}
+%__mkdir_p $RPM_BUILD_ROOT{%_controldir,%_sbindir,%_man8dir}
 %__install -p -m755 control{,-dump,-restore} $RPM_BUILD_ROOT%_sbindir/
 %__install -p -m755 functions $RPM_BUILD_ROOT%_sysconfdir/control.d/
 %__mkdir_p -m700 $RPM_BUILD_ROOT/var/run/control
@@ -39,7 +41,7 @@ from package installation.
 		[ -f "$f" -a -x "$f" ] || continue
 		sed -ne 's/^\([A-Za-z][A-Za-z_0-9]*[[:space:]]*\)()$/\1/pg' "$f"
 	done |LC_COLLATE=C sort -u
-) >$RPM_BUILD_ROOT%_sysconfdir/control.d/.provides.sh
+) >$RPM_BUILD_ROOT%_controldir/.provides.sh
 
 %files
 %config %_sysconfdir/rpm/macros.d/control
