@@ -13,7 +13,7 @@ if [ $# -ge 1 ]; then
 	FACILITY="$1"
 	shift
 
-	[ -n "${FACILITY//*\/*/}" ] || FACILITY=`echo "$FACILITY" |tr / _`
+	FACILITY="${FACILITY//\//_}"
 
 	if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
 		$FACILITIES_DIR/$FACILITY "$*" || exit 1

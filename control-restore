@@ -4,7 +4,7 @@
 STATUS_DIR=/var/run/control
 
 for FACILITY in "$@"; do
-	[ -n "${FACILITY//*\/*/}" ] || FACILITY=`echo "$FACILITY" |tr / _`
+	FACILITY="${FACILITY//\//_}"
 
 	if [ -s "$STATUS_DIR/$FACILITY" ]; then
 		STATUS=`cat "$STATUS_DIR/$FACILITY"`

@@ -4,7 +4,7 @@
 STATUS_DIR=/var/run/control
 
 for FACILITY in "$@"; do
-	[ -n "${FACILITY//*\/*/}" ] || FACILITY=`echo "$FACILITY" |tr / _`
+	FACILITY="${FACILITY//\//_}"
 
 	rm -f "$STATUS_DIR/$FACILITY"
 	/usr/sbin/control "$FACILITY" >"$STATUS_DIR/$FACILITY" ||
