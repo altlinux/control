@@ -30,7 +30,7 @@ lookup()
 	eval "echo \$$1_$2"
 }
 
-lookup_array() 
+lookup_array()
 {
 	eval "echo \$ARRAY_$1_$2"
 }
