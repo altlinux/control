@@ -77,12 +77,12 @@ stat_file() # private
 	find "$BASEPATH" -maxdepth 1 -path "$PATHNAME" -printf '%m_%u_%g'
 }
 
-control_list() # private
+control_list()
 {
 	printf %s\\n "$NAME_LIST"
 }
 
-control_help() # private
+control_help()
 {
   	local NAME
 
