@@ -1,0 +1,111 @@
+#!/bin/sh
+# $Id$
+
+function define()
+{
+	eval "$1_$2='$3'"
+}
+
+function lookup()
+{
+	eval "echo \$$1_$2"
+}
+
+function validate()
+{
+	echo "$1" | grep -q '^[a-z0-9_]*$'
+}
+
+function register()
+{
+	test -z "`lookup REGISTERED "$1"`" || return
+	define REGISTERED "$1" yes
+	test -z "$NAME_LIST" && NAME_LIST="$1" || NAME_LIST="$NAME_LIST $1"
+}
+
+function new_fmode()
+{
+	register "$1"
+	define NAME_TO_FMODE "$1" "$2"
+	define NAME_TO_OWNER "$1" "$3.$4"
+	define FMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
+}
+
+function new_subst()
+{
+	register "$1"
+	define NAME_TO_REGEX "$1" "$2"
+	define NAME_TO_SUBST "$1" "$3"
+}
+
+function stat()
+{
+	local PATHNAME="$1"
+	local BASEPATH
+
+	BASEPATH="`echo "$PATHNAME" | sed 's,/[^/]*$,,'`"
+	find "$BASEPATH" -path "$PATHNAME" -maxdepth 1 -printf '%m_%u_%g'
+}
+
+function control_fmode()
+{
+	local FILE="$1" REQUEST="$2"
+	local STAT NAME FMODE OWNER
+
+	case "$REQUEST" in
+	list)
+		echo "$NAME_LIST"
+		;;
+	status|'')
+		STAT="`stat "$FILE"`"
+		NAME="`validate "$STAT" && lookup FMODE_OWNER_TO_NAME "$STAT"`"
+		if [ -n "$NAME" ]; then
+			echo "$NAME"
+		else
+			echo "unknown"
+		fi
+		;;
+	*)
+		FMODE="`validate "$REQUEST" && lookup NAME_TO_FMODE "$REQUEST"`"
+		OWNER="`validate "$REQUEST" && lookup NAME_TO_OWNER "$REQUEST"`"
+		if [ -n "$FMODE" -a -n "$OWNER" ]; then
+			chown "$OWNER" "$FILE" || return 1
+			chmod "$FMODE" "$FILE" || return 1
+		else
+			echo "${0##*/}: Invalid mode: $REQUEST" >&2
+			return 1
+		fi
+		;;
+	esac
+}
+
+function control_subst()
+{
+	local FILE="$1" REQUEST="$2"
+	local NAME REGEX SUBST TMPFILE
+
+	case "$REQUEST" in
+	list)
+		echo "$NAME_LIST"
+		;;
+	status|'')
+		for NAME in $NAME_LIST; do
+			REGEX="`lookup NAME_TO_REGEX "$NAME"`"
+			test -n "$REGEX" || continue
+			if grep -Eq "$REGEX" "$FILE"; then
+				echo "$NAME"
+				return
+			fi
+		done
+		echo "unknown"
+		;;
+	*)
+		SUBST="`validate "$REQUEST" && lookup NAME_TO_SUBST "$REQUEST"`"
+		if [ -z "$SUBST" ]; then
+			echo "${0##*/}: Invalid mode: $REQUEST" >&2
+			return 1
+		fi
+		subst "$SUBST" "$FILE" || return 1
+		;;
+	esac
+}

@@ -1,0 +1,37 @@
+#!/bin/sh
+# $Id$
+
+function Fatal()
+{
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
+FACILITIES_DIR=/etc/control.d/facilities
+
+if [ $# -ge 1 ]; then
+	FACILITY="$1"
+	shift
+
+	[ -n "${FACILITY//*\/*/}" ] || FACILITY=`echo "$FACILITY" |tr / _`
+
+	if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
+		$FACILITIES_DIR/$FACILITY "$*" || exit 1
+		if [ -n "$*" -a "$*" != "list" -a "$*" != "status" ]; then
+			STATUS="`$FACILITIES_DIR/$FACILITY status`"
+			if [ "$STATUS" != "$*" ]; then
+				Fatal "$FACILITY: requested $*, got $STATUS"
+			fi
+		fi
+		exit 0
+	else
+		Fatal "No such facility: $FACILITY"
+	fi
+fi
+
+ls -1 $FACILITIES_DIR/ | while read FACILITY; do
+	[ "${FACILITY%.*}" = "$FACILITY" ] || continue
+	LIST="`$FACILITIES_DIR/$FACILITY list`"
+	STATUS="`$FACILITIES_DIR/$FACILITY status`"
+	printf "%-15s %-15s (%s)\n" "$FACILITY" "$STATUS" "$LIST"
+done

@@ -1,0 +1,16 @@
+#!/bin/sh
+# $Id$
+
+STATUS_DIR=/var/run/control
+
+for FACILITY in "$@"; do
+	[ -n "${FACILITY//*\/*/}" ] || FACILITY=`echo "$FACILITY" |tr / _`
+
+	if [ -s "$STATUS_DIR/$FACILITY" ]; then
+		STATUS=`cat "$STATUS_DIR/$FACILITY"`
+		if [ -n "$STATUS" -a "$STATUS" != unknown ]; then
+			/usr/sbin/control "$FACILITY" "$STATUS"
+		fi
+	fi
+	rm -f "$STATUS_DIR/$FACILITY"
+done
