@@ -1,13 +1,13 @@
 #!/bin/sh
 # $Id$
 
-function Fatal()
+FACILITIES_DIR=/etc/control.d/facilities
+
+function fatal()
 {
 	echo "${0##*/}: $*" >&2
 	exit 1
 }
-
-FACILITIES_DIR=/etc/control.d/facilities
 
 if [ $# -ge 1 ]; then
 	FACILITY="$1"
@@ -20,16 +20,17 @@ if [ $# -ge 1 ]; then
 		if [ -n "$*" -a "$*" != "list" -a "$*" != "status" ]; then
 			STATUS="`$FACILITIES_DIR/$FACILITY status`"
 			if [ "$STATUS" != "$*" ]; then
-				Fatal "$FACILITY: requested $*, got $STATUS"
+				fatal "$FACILITY: Requested $*, got $STATUS"
 			fi
 		fi
 		exit 0
 	else
-		Fatal "No such facility: $FACILITY"
+		fatal "No such facility: $FACILITY"
 	fi
 fi
 
-ls -1 $FACILITIES_DIR/ | while read FACILITY; do
+ls -1 $FACILITIES_DIR/ |
+while read FACILITY; do
 	[ "${FACILITY%.*}" = "$FACILITY" ] || continue
 	LIST="`$FACILITIES_DIR/$FACILITY list`"
 	STATUS="`$FACILITIES_DIR/$FACILITY status`"
