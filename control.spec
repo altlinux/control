@@ -26,7 +26,7 @@ from package installation.
 
 %install
 %__mkdir_p $RPM_BUILD_ROOT{/etc/control.d/facilities,%_sbindir}
-%__install -p -m755 control* $RPM_BUILD_ROOT%_sbindir/
+%__install -p -m755 control{,-*} $RPM_BUILD_ROOT%_sbindir/
 %__install -p -m755 functions $RPM_BUILD_ROOT/etc/control.d/
 %__mkdir_p -m700 $RPM_BUILD_ROOT/var/run/control
 
