@@ -54,6 +54,7 @@ from package installation.
 * Thu Mar 31 2005 Dmitry V. Levin <ldv@altlinux.org> 0.6.2-alt1
 - functions/new_subst:
   + extended to support several rules for each mode (legion).
+- Do not add private functions to the .provides.sh file.
 
 * Thu Nov 11 2004 Dmitry V. Levin <ldv@altlinux.org> 0.6.1.1-alt1
 - functions/stat_file: fixed "find -maxdepth" warning.
