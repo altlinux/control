@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.6.1
+Version: 0.6.1.1
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -51,6 +51,9 @@ from package installation.
 %_man8dir/*
 
 %changelog
+* Thu Nov 11 2004 Dmitry V. Levin <ldv@altlinux.org> 0.6.1.1-alt1
+- functions/stat_file: fixed "find -maxdepth" warning.
+
 * Sat Sep 25 2004 Dmitry V. Levin <ldv@altlinux.org> 0.6.1-alt1
 - functions/{new_help,control_help}:
   new functions for help support.
