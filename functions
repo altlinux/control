@@ -1,29 +1,29 @@
 #!/bin/sh
 # $Id$
 
-function define()
+define()
 {
 	eval "$1_$2='$3'"
 }
 
-function lookup()
+lookup()
 {
 	eval "echo \$$1_$2"
 }
 
-function validate()
+validate()
 {
 	echo "$1" | grep -q '^[a-z0-9_]*$'
 }
 
-function register()
+register()
 {
 	test -z "`lookup REGISTERED "$1"`" || return
 	define REGISTERED "$1" yes
 	test -z "$NAME_LIST" && NAME_LIST="$1" || NAME_LIST="$NAME_LIST $1"
 }
 
-function new_fmode()
+new_fmode()
 {
 	register "$1"
 	define NAME_TO_FMODE "$1" "$2"
@@ -31,14 +31,14 @@ function new_fmode()
 	define FMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
 }
 
-function new_subst()
+new_subst()
 {
 	register "$1"
 	define NAME_TO_REGEX "$1" "$2"
 	define NAME_TO_SUBST "$1" "$3"
 }
 
-function stat()
+stat()
 {
 	local PATHNAME="$1"
 	local BASEPATH
@@ -47,7 +47,7 @@ function stat()
 	find "$BASEPATH" -path "$PATHNAME" -maxdepth 1 -printf '%m_%u_%g'
 }
 
-function control_fmode()
+control_fmode()
 {
 	local FILE="$1" REQUEST="$2"
 	local STAT NAME FMODE OWNER
@@ -79,7 +79,7 @@ function control_fmode()
 	esac
 }
 
-function control_subst()
+control_subst()
 {
 	local FILE="$1" REQUEST="$2"
 	local NAME REGEX SUBST TMPFILE

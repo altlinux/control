@@ -3,7 +3,7 @@
 
 FACILITIES_DIR=/etc/control.d/facilities
 
-function fatal()
+fatal()
 {
 	echo "${0##*/}: $*" >&2
 	exit 1
