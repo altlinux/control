@@ -1,9 +1,15 @@
 #!/bin/sh
 # $Id$
 
+errmsg()
+{
+	echo "${0##*/}: $*" >&2
+}
+
 define()
 {
-	eval "$1_$2='$3'"
+	local arg=$(printf %s "$3" |sed -e 's/["$`\]/\\&/g')
+	eval "$1_$2=\"$arg\""
 }
 
 lookup()
@@ -16,11 +22,12 @@ validate()
 	echo "$1" | grep -q '^[a-z0-9_]*$'
 }
 
+NAME_LIST=
 register()
 {
-	test -z "`lookup REGISTERED "$1"`" || return
+	[ -z "`lookup REGISTERED "$1"`" ] || return
 	define REGISTERED "$1" yes
-	test -z "$NAME_LIST" && NAME_LIST="$1" || NAME_LIST="$NAME_LIST $1"
+	[ -z "$NAME_LIST" ] && NAME_LIST="$1" || NAME_LIST="$NAME_LIST $1"
 }
 
 new_fmode()
@@ -38,74 +45,115 @@ new_subst()
 	define NAME_TO_SUBST "$1" "$3"
 }
 
-stat()
+new_help()
 {
-	local PATHNAME="$1"
-	local BASEPATH
+	register "$1"
+	define HELP_TO "$1" "$2"
+}
+
+stat_file()
+{
+	local PATHNAME="$1" BASEPATH
 
 	BASEPATH="`echo "$PATHNAME" | sed 's,/[^/]*$,,'`"
 	find "$BASEPATH" -path "$PATHNAME" -maxdepth 1 -printf '%m_%u_%g'
 }
 
+control_list()
+{
+	echo "$NAME_LIST"
+}
+
+control_help()
+{
+  	local NAME
+
+	for NAME in $NAME_LIST; do
+		echo -n "$NAME: "
+		lookup HELP_TO "$NAME"
+	done
+}
+
+control_fmode_status()
+{
+	local FILE="$1" STAT NAME
+
+	STAT="`stat_file "$FILE"`"
+	NAME="`validate "$STAT" && lookup FMODE_OWNER_TO_NAME "$STAT"`"
+	if [ -n "$NAME" ]; then
+		echo "$NAME"
+	else
+		echo "unknown"
+	fi
+}
+
 control_fmode()
 {
-	local FILE="$1" REQUEST="$2"
-	local STAT NAME FMODE OWNER
+	local FILE="$1" REQUEST="$2" FMODE= OWNER=
 
 	case "$REQUEST" in
+	help)
+		control_help
+		;;
 	list)
-		echo "$NAME_LIST"
+		control_list
 		;;
 	status|'')
-		STAT="`stat "$FILE"`"
-		NAME="`validate "$STAT" && lookup FMODE_OWNER_TO_NAME "$STAT"`"
-		if [ -n "$NAME" ]; then
-			echo "$NAME"
-		else
-			echo "unknown"
-		fi
+		control_fmode_status "$FILE"
 		;;
 	*)
-		FMODE="`validate "$REQUEST" && lookup NAME_TO_FMODE "$REQUEST"`"
-		OWNER="`validate "$REQUEST" && lookup NAME_TO_OWNER "$REQUEST"`"
-		if [ -n "$FMODE" -a -n "$OWNER" ]; then
-			chown "$OWNER" "$FILE" || return 1
-			chmod "$FMODE" "$FILE" || return 1
-		else
-			echo "${0##*/}: Invalid mode: $REQUEST" >&2
+		if validate "$REQUEST"; then
+			FMODE="`lookup NAME_TO_FMODE "$REQUEST"`"
+			OWNER="`lookup NAME_TO_OWNER "$REQUEST"`"
+		fi
+		if [ -z "$FMODE" -o -z "$OWNER" ]; then
+			errmsg "Invalid mode: $REQUEST"
 			return 1
 		fi
+		if [ "`control_fmode_status "$FILE"`" = "$REQUEST" ]; then
+			return
+		fi
+		chown "$OWNER" "$FILE" && chmod "$FMODE" "$FILE" || return 1
 		;;
 	esac
 }
 
+control_subst_status()
+{
+	local FILE="$1" NAME REGEX
+
+	for NAME in $NAME_LIST; do
+		REGEX="`lookup NAME_TO_REGEX "$NAME"`"
+		[ -n "$REGEX" ] || continue
+		if grep -Eq "$REGEX" "$FILE"; then
+			echo "$NAME"
+			return
+		fi
+	done
+	echo "unknown"
+}
+
 control_subst()
 {
-	local FILE="$1" REQUEST="$2"
-	local NAME REGEX SUBST TMPFILE
+	local FILE="$1" REQUEST="$2" SUBST
 
 	case "$REQUEST" in
+	help)
+		control_help
+		;;
 	list)
-		echo "$NAME_LIST"
+		control_list
 		;;
 	status|'')
-		for NAME in $NAME_LIST; do
-			REGEX="`lookup NAME_TO_REGEX "$NAME"`"
-			test -n "$REGEX" || continue
-			if grep -Eq "$REGEX" "$FILE"; then
-				echo "$NAME"
-				return
-			fi
-		done
-		echo "unknown"
+		control_subst_status "$FILE"
 		;;
 	*)
 		SUBST="`validate "$REQUEST" && lookup NAME_TO_SUBST "$REQUEST"`"
 		if [ -z "$SUBST" ]; then
-			echo "${0##*/}: Invalid mode: $REQUEST" >&2
+			errmsg "Invalid mode: $REQUEST"
 			return 1
 		fi
-		if [ "`control_subst "$FILE" status`" = "$REQUEST" ]; then
+		if [ "`control_subst_status "$FILE"`" = "$REQUEST" ]; then
 			return
 		fi
 		subst "$SUBST" "$FILE" || return 1
