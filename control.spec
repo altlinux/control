@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.4
+Version: 0.5
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -25,17 +25,24 @@ from package installation.
 %setup -q
 
 %install
-%__mkdir_p $RPM_BUILD_ROOT{/etc/control.d/facilities,%_sbindir}
+%__mkdir_p $RPM_BUILD_ROOT{/etc/control.d/facilities,%_sbindir,%_man8dir}
 %__install -p -m755 control{,-*} $RPM_BUILD_ROOT%_sbindir/
 %__install -p -m755 functions $RPM_BUILD_ROOT/etc/control.d/
 %__mkdir_p -m700 $RPM_BUILD_ROOT/var/run/control
+%__install -p -m644 *.8 $RPM_BUILD_ROOT%_man8dir/
 
 %files
 %_sbindir/control*
 /etc/control.d
 /var/run/control
+%_man8dir/*
 
 %changelog
+* Wed Jan 08 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5-alt1
+- Synced with owl-control-0.5:
+  * Wed Jan 08 2003 Solar Designer <solar@owl.openwall.com>
+  - Wrote control(8) and control-dump(8) manual pages.
+
 * Sun Nov 03 2002 Dmitry V. Levin <ldv@altlinux.org> 0.4-alt1
 - Synced with owl-control-0.4, including:
   + minor syntax fixes in control, control-dump and control-restore;
