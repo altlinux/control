@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.5
+Version: 0.5.1
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -38,6 +38,9 @@ from package installation.
 %_man8dir/*
 
 %changelog
+* Sun Jan 19 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5.1-alt1
+- Refined output for facilities with slashes.
+
 * Wed Jan 08 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5-alt1
 - Synced with owl-control-0.5:
   * Wed Jan 08 2003 Solar Designer <solar@owl.openwall.com>

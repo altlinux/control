@@ -11,6 +11,7 @@ function fatal()
 
 if [ $# -ge 1 ]; then
 	FACILITY="$1"
+	REQUESTED_FACILITY="$FACILITY"
 	shift
 
 	FACILITY="${FACILITY//\//_}"
@@ -20,7 +21,7 @@ if [ $# -ge 1 ]; then
 		if [ -n "$*" -a "$*" != "list" -a "$*" != "status" ]; then
 			STATUS="`$FACILITIES_DIR/$FACILITY status`"
 			if [ "$STATUS" != "$*" ]; then
-				fatal "$FACILITY: Requested $*, got $STATUS"
+				fatal "$REQUESTED_FACILITY: Requested $*, got $STATUS"
 			fi
 		fi
 		exit 0
@@ -34,5 +35,6 @@ while read FACILITY; do
 	[ "${FACILITY%.*}" = "$FACILITY" ] || continue
 	LIST="`$FACILITIES_DIR/$FACILITY list`"
 	STATUS="`$FACILITIES_DIR/$FACILITY status`"
+	[ -n "${FACILITY##_*}" ] || FACILITY="${FACILITY//_//}"
 	printf "%-15s %-15s (%s)\n" "$FACILITY" "$STATUS" "$LIST"
 done
