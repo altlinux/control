@@ -11,18 +11,21 @@ fatal()
 
 if [ $# -ge 1 ]; then
 	FACILITY="$1"
-	REQUESTED_FACILITY="$FACILITY"
 	shift
 
+	REQUESTED_FACILITY="$FACILITY"
 	FACILITY="${FACILITY//\//_}"
 
 	if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
 		$FACILITIES_DIR/$FACILITY "$*" || exit 1
-		if [ -n "$*" -a "$*" != "list" -a "$*" != "status" ]; then
-			STATUS="`$FACILITIES_DIR/$FACILITY status`"
-			if [ "$STATUS" != "$*" ]; then
-				fatal "$REQUESTED_FACILITY: Requested $*, got $STATUS"
-			fi
+		case "$*" in
+			''|list|status|help)
+				exit 0
+				;;
+		esac
+		STATUS="`$FACILITIES_DIR/$FACILITY status`"
+		if [ "$STATUS" != "$*" ]; then
+			fatal "$REQUESTED_FACILITY: Requested $*, got $STATUS"
 		fi
 		exit 0
 	else
