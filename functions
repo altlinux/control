@@ -1,7 +1,7 @@
 #!/bin/sh
 # $Id$
 
-errmsg()
+echo_error()
 {
 	echo "${0##*/}: $*" >&2
 }
@@ -107,7 +107,7 @@ control_fmode()
 			OWNER="`lookup NAME_TO_OWNER "$REQUEST"`"
 		fi
 		if [ -z "$FMODE" -o -z "$OWNER" ]; then
-			errmsg "Invalid mode: $REQUEST"
+			echo_error "Invalid mode: $REQUEST"
 			return 1
 		fi
 		if [ "`control_fmode_status "$FILE"`" = "$REQUEST" ]; then
@@ -150,7 +150,7 @@ control_subst()
 	*)
 		SUBST="`validate "$REQUEST" && lookup NAME_TO_SUBST "$REQUEST"`"
 		if [ -z "$SUBST" ]; then
-			errmsg "Invalid mode: $REQUEST"
+			echo_error "Invalid mode: $REQUEST"
 			return 1
 		fi
 		if [ "`control_subst_status "$FILE"`" = "$REQUEST" ]; then
