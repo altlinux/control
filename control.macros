@@ -13,7 +13,7 @@ fi \
 %post_control(s:)	\
 if [ $1 -ge 2 ]; then \
 	/usr/sbin/control-restore %* \
-else
+else \
 	for facility in %*; do \
 		/usr/sbin/control "$facility" %{-s*}%{!-s:public} \
 	done \
