@@ -6,11 +6,12 @@ STATUS_DIR=/var/run/control
 for FACILITY in "$@"; do
 	FACILITY="${FACILITY//\//_}"
 
-	if [ -s "$STATUS_DIR/$FACILITY" ]; then
-		STATUS=`cat "$STATUS_DIR/$FACILITY"`
+	FILE="$STATUS_DIR/$FACILITY"
+	if [ -s "$FILE" ]; then
+		STATUS="`cat "$FILE"`"
 		if [ -n "$STATUS" -a "$STATUS" != unknown ]; then
 			/usr/sbin/control "$FACILITY" "$STATUS"
 		fi
 	fi
-	rm -f "$STATUS_DIR/$FACILITY"
+	rm -f "$FILE"
 done
