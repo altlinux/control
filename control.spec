@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.5.1
+Version: 0.5.2
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -38,6 +38,9 @@ from package installation.
 %_man8dir/*
 
 %changelog
+* Sat Apr 12 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5.2-alt1
+- control-restore: be more verbose.
+
 * Sun Jan 19 2003 Dmitry V. Levin <ldv@altlinux.org> 0.5.1-alt1
 - Refined output for facilities with slashes.
 
