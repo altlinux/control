@@ -154,7 +154,7 @@ control_subst_status() # private
 		FOUND=
 		lookup_array ARRAY NAME_TO_REGEX "$NAME"
 		for ELEM in $ARRAY; do
-			REGEX="$(eval "echo \$$ELEM")"
+			eval "REGEX=\"\$$ELEM\""
 			[ -n "$REGEX" ] || continue
 			grep -Eq "$REGEX" "$FILE" &&
 				FOUND=1 ||
