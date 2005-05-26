@@ -170,7 +170,7 @@ control_subst_status() # private
 
 control_subst()
 {
-	local FILE="$1" REQUEST="$2" ARRAY= ELEM SUBST
+	local FILE="$1" REQUEST="$2" ARRAY= ELEM SUBST=
 
 	case "$REQUEST" in
 	help)
@@ -191,7 +191,7 @@ control_subst()
 			return 1
 		fi
 		for ELEM in $ARRAY; do
-			SUBST="$(eval "echo \$$ELEM")"
+			eval "SUBST=\"\$$ELEM\""
 			if [ -z "$SUBST" ]; then
 				echo_error "Invalid mode: $REQUEST"
 				return 1
