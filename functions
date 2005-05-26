@@ -8,8 +8,9 @@ echo_error() # private
 
 array_count() # private
 {
-	eval set -- "\$$1"
-	echo $#
+	local name="$1"
+	eval set -- "\$$2"
+	eval "$name=$#"
 }
 
 define() # private
@@ -27,7 +28,7 @@ define_array() # private
 	if [ -z "${arg##*[\"\$\`\\]*}" ]; then
 		arg=$(printf %s "$arg" | sed -e 's/["$`\]/\\&/g')
 	fi
-	local n=$(array_count "ARRAY_$1_$2")
+	array_count n "ARRAY_$1_$2"
 	eval "$1_$2_$n=\"$arg\"; ARRAY_$1_$2=\"\$ARRAY_$1_$2 $1_$2_$n\""
 }
 
