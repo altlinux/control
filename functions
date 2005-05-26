@@ -49,7 +49,7 @@ validate() # private
 NAME_LIST=
 register() # private
 {
-	[ -z "$(lookup REGISTERED "$1")" ] || return
+	eval "test -z \"\$REGISTERED_$1\"" || return
 	define REGISTERED "$1" yes
 	[ -z "$NAME_LIST" ] && NAME_LIST="$1" || NAME_LIST="$NAME_LIST $1"
 }
