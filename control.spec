@@ -9,7 +9,7 @@ License: GPL
 Group: System/Base
 BuildArch: noarch
 
-Source: %name-%version.tar.gz
+Source: %name-%version.tar.bz2
 
 Requires: %__subst
 
