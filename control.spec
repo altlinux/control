@@ -1,7 +1,7 @@
 # $Id$
 
 Name: control
-Version: 0.6.2
+Version: 0.7.0
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -51,6 +51,9 @@ from package installation.
 %_man8dir/*
 
 %changelog
+* Fri May 27 2005 Dmitry V. Levin <ldv@altlinux.org> 0.7.0-alt1
+- Optimized functions for speed.
+
 * Thu Mar 31 2005 Dmitry V. Levin <ldv@altlinux.org> 0.6.2-alt1
 - functions/new_subst:
   + extended to support several rules for each mode (legion).
