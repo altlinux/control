@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id$
 
 FACILITIES_DIR=/etc/control.d/facilities
 

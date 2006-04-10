@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id$
 
 STATUS_DIR=/var/run/control
 

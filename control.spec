@@ -1,5 +1,3 @@
-# $Id$
-
 Name: control
 Version: 0.7.0
 Release: alt1
