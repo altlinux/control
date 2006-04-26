@@ -1,1 +1,2 @@
-tar: .
+spec: control/control.spec
+tar: control

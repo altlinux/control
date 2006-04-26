@@ -7,7 +7,7 @@ License: GPL
 Group: System/Base
 BuildArch: noarch
 
-Source: %name-%version.tar.bz2
+Source: %name-%version.tar
 
 Requires: %__subst
 
@@ -25,21 +25,21 @@ from package installation.
 %setup -q
 
 %install
-%__mkdir_p $RPM_BUILD_ROOT{%_controldir,%_sbindir,%_man8dir}
-%__install -p -m755 control{,-dump,-restore} $RPM_BUILD_ROOT%_sbindir/
-%__install -p -m755 functions $RPM_BUILD_ROOT%_sysconfdir/control.d/
-%__mkdir_p -m700 $RPM_BUILD_ROOT/var/run/control
-%__install -p -m644 control{,-dump,-restore}.8 $RPM_BUILD_ROOT%_man8dir/
-%__install -pD -m644 control.macros $RPM_BUILD_ROOT%_sysconfdir/rpm/macros.d/control
+mkdir -p %buildroot{%_controldir,%_sbindir,%_man8dir}
+install -p -m755 control{,-dump,-restore} %buildroot%_sbindir/
+install -p -m755 functions %buildroot%_sysconfdir/control.d/
+mkdir -p -m700 %buildroot/var/run/control
+install -p -m644 control{,-dump,-restore}.8 %buildroot%_man8dir/
+install -pD -m644 control.macros %buildroot%_sysconfdir/rpm/macros.d/control
 
 # Generate shell functions provides list.
 (
 	echo '# shell functions provides list'
-	for f in $RPM_BUILD_ROOT%_sysconfdir/control.d/*; do
+	for f in %buildroot%_sysconfdir/control.d/*; do
 		[ -f "$f" -a -x "$f" ] || continue
 		sed -ne 's/^\([A-Za-z][A-Za-z_0-9]*[[:space:]]*\)()$/\1/pg' "$f"
 	done |LC_COLLATE=C sort -u
-) >$RPM_BUILD_ROOT%_controldir/.provides.sh
+) >%buildroot%_controldir/.provides.sh
 
 %files
 %config %_sysconfdir/rpm/macros.d/control
