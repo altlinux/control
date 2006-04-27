@@ -4,7 +4,7 @@
 \fBcontrol\fR \- control installed system facilities
 .SH SYNOPSIS
 .B control
-[ \fIFACILITY\fR [\fBlist\fR|\fBstatus\fR|\fISTATUS\fR] ]
+[ \fIFACILITY\fR [\fBhelp\fR|\fBlist\fR|\fBstatus\fR|\fBsummary\fR|\fISTATUS\fR] ]
 .SH DESCRIPTION
 .B control
 provides a common interface to register and control system facilities.
@@ -23,9 +23,13 @@ When a
 name is specified,
 .B control
 may
+print facility
+.BR summary ,
 .B list
-its supported settings,
-reports its current
+its supported settings or print short
+.B help
+text for them,
+report its current
 .B status
 (default action),
 or switch it to a new

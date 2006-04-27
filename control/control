@@ -18,7 +18,7 @@ if [ $# -ge 1 ]; then
 	if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
 		$FACILITIES_DIR/$FACILITY "$*" || exit 1
 		case "$*" in
-			''|list|status|help|'help '*)
+			''|help|'help '*|list|status|summary)
 				exit 0
 				;;
 		esac

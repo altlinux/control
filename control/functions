@@ -75,6 +75,16 @@ new_help()
 	define HELP_TO "$1" "$2"
 }
 
+new_summary()
+{
+	local arg="$1"
+	if [ -z "${arg##*
+*}" ]; then
+		arg="$(printf %s "$arg" |tr -s '[:space:]' ' ')"
+	fi
+	define SUMMARY FOR "$arg"
+}
+
 stat_file() # private
 {
 	local PATHNAME="$1" BASEPATH
@@ -134,6 +144,9 @@ control_fmode()
 	status)
 		control_fmode_status "$FILE"
 		;;
+	summary)
+		control_summary
+		;;
 	*)
 		if validate "$REQUEST"; then
 			lookup FMODE NAME_TO_FMODE "$REQUEST"
@@ -187,6 +200,9 @@ control_subst()
 	status)
 		control_subst_status "$FILE"
 		;;
+	summary)
+		control_summary
+		;;
 	*)
 		if validate "$REQUEST"; then
 			lookup_array ARRAY NAME_TO_SUBST "$REQUEST"
@@ -206,6 +222,11 @@ control_subst()
 		done
 		;;
 	esac
+}
+
+control_summary()
+{
+	printf %s\\n "$SUMMARY_FOR"
 }
 
 is_builtin_mode()
