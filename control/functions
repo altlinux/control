@@ -90,9 +90,15 @@ control_list()
 
 control_help()
 {
-  	local NAME VALUE
+  	local NAME VALUE SEARCH_LIST
 
-	for NAME in $NAME_LIST; do
+	if [ -n "$1" ]; then
+		SEARCH_LIST="$*"
+	else
+		SEARCH_LIST="$NAME_LIST"
+	fi
+
+	for NAME in $SEARCH_LIST; do
 		printf %s "$NAME: "
 		lookup VALUE HELP_TO "$NAME"
 		printf %s\\n "$VALUE"
@@ -119,8 +125,8 @@ control_fmode()
 	local FILE="$1" REQUEST="$2" FMODE= OWNER=
 
 	case "$REQUEST" in
-	help)
-		control_help
+	help|'help '*)
+		control_help "${REQUEST#help}"
 		;;
 	list)
 		control_list
@@ -172,8 +178,8 @@ control_subst()
 	local FILE="$1" REQUEST="$2" ARRAY= ELEM SUBST=
 
 	case "$REQUEST" in
-	help)
-		control_help
+	help|'help '*)
+		control_help "${REQUEST#help}"
 		;;
 	list)
 		control_list
