@@ -1,5 +1,5 @@
 Name: control
-Version: 0.7.1
+Version: 0.7.2
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -49,6 +49,9 @@ install -pD -m644 control.macros %buildroot%_sysconfdir/rpm/macros.d/control
 %_man8dir/*
 
 %changelog
+* Fri Apr 28 2006 Dmitry V. Levin <ldv@altlinux.org> 0.7.2-alt1
+- functions/is_builtin_mode: handle "help *" and "summary".
+
 * Thu Apr 27 2006 Dmitry V. Levin <ldv@altlinux.org> 0.7.1-alt1
 - control: New builtin directive: summary.
 - control.8: Document help and status directives.
