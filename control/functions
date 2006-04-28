@@ -232,7 +232,7 @@ control_summary()
 is_builtin_mode()
 {
 	case "$1" in
-	help|list|status|'')
+	''|help|'help '*|list|status|summary)
 		return 0
 		;;
 	esac
