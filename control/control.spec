@@ -6,6 +6,7 @@ Summary: A set of scripts to control installed system facilities
 License: GPL
 Group: System/Base
 BuildArch: noarch
+Packager: Dmitry V. Levin <ldv@altlinux.org>
 
 Source: %name-%version.tar
 
