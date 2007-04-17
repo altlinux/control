@@ -34,7 +34,9 @@ fi
 
 ls -1 $FACILITIES_DIR/ |
 while read FACILITY; do
-	[ "${FACILITY%.*}" = "$FACILITY" ] || continue
+	case "$FACILITY" in
+		*.rpm*|*.orig|*~) continue ;;
+	esac
 	LIST="`$FACILITIES_DIR/$FACILITY list`"
 	STATUS="`$FACILITIES_DIR/$FACILITY status`"
 	[ -n "${FACILITY##_*}" ] || FACILITY="${FACILITY//_//}"
