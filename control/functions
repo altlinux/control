@@ -87,11 +87,9 @@ new_summary()
 
 stat_file() # private
 {
-	local PATHNAME="$1" BASEPATH
-
-	BASEPATH="${PATHNAME%/*}"
-	[ -n "$BASEPATH" ] || return 1
-	find "$BASEPATH/" -maxdepth 1 -path "$PATHNAME" -printf '%m_%u_%g'
+	local PATHNAME="$1"
+	[ -z "${PATHNAME##/*}" ] || return 1
+	find "$PATHNAME" -maxdepth 0 -path "$PATHNAME" -printf '%m_%u_%g'
 }
 
 control_list()
