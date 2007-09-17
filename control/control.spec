@@ -1,5 +1,5 @@
 Name: control
-Version: 0.7.3
+Version: 0.7.4
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -50,6 +50,9 @@ install -pD -m644 control.macros %buildroot%_sysconfdir/rpm/macros.d/control
 %_man8dir/*
 
 %changelog
+* Tue Sep 18 2007 Dmitry V. Levin <ldv@altlinux.org> 0.7.4-alt1
+- functions/stat_file: Speed up.
+
 * Sun Apr 22 2007 Dmitry V. Levin <ldv@altlinux.org> 0.7.3-alt1
 - control: Changed facility names filter to allow dots in facility
   names and disallow rpmi and editor backup files (legion).
