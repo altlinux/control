@@ -25,6 +25,9 @@ from package installation.
 %prep
 %setup -q
 
+%build
+sed -i s/@VERSION@/%version-%release/ control
+
 %install
 mkdir -p %buildroot{%_controldir,%_sbindir,%_man8dir}
 install -p -m755 control{,-dump,-restore} %buildroot%_sbindir/

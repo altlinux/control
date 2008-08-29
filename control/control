@@ -25,6 +25,17 @@ fi
 FACILITY="$1"
 shift
 
+case "$FACILITY" in
+	--help)
+		a= exec man 8 control
+		exit
+		;;
+	--version)
+		echo @VERSION@
+		exit
+		;;
+esac
+
 REQUESTED_FACILITY="$FACILITY"
 FACILITY="${FACILITY//\//_}"
 
