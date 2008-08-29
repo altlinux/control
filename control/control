@@ -8,37 +8,38 @@ fatal()
 	exit 1
 }
 
-if [ $# -ge 1 ]; then
-	FACILITY="$1"
-	shift
-
-	REQUESTED_FACILITY="$FACILITY"
-	FACILITY="${FACILITY//\//_}"
-
-	if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
-		$FACILITIES_DIR/$FACILITY "$*" || exit 1
-		case "$*" in
-			''|help|'help '*|list|status|summary)
-				exit 0
-				;;
+if [ $# -eq 0 ]; then
+	ls -1 $FACILITIES_DIR/ |
+	while read FACILITY; do
+		case "$FACILITY" in
+			*.rpm*|*.orig|*~) continue ;;
 		esac
+		LIST="`$FACILITIES_DIR/$FACILITY list`"
 		STATUS="`$FACILITIES_DIR/$FACILITY status`"
-		if [ "$STATUS" != "$*" ]; then
-			fatal "$REQUESTED_FACILITY: Requested $*, got $STATUS"
-		fi
-		exit 0
-	else
-		fatal "No such facility: $FACILITY"
-	fi
+		[ -n "${FACILITY##_*}" ] || FACILITY="${FACILITY//_//}"
+		printf "%-15s %-15s (%s)\n" "$FACILITY" "$STATUS" "$LIST"
+	done
+	exit
 fi
 
-ls -1 $FACILITIES_DIR/ |
-while read FACILITY; do
-	case "$FACILITY" in
-		*.rpm*|*.orig|*~) continue ;;
+FACILITY="$1"
+shift
+
+REQUESTED_FACILITY="$FACILITY"
+FACILITY="${FACILITY//\//_}"
+
+if [ -x "$FACILITIES_DIR/$FACILITY" ]; then
+	$FACILITIES_DIR/$FACILITY "$*" || exit 1
+	case "$*" in
+		''|help|'help '*|list|status|summary)
+			exit 0
+			;;
 	esac
-	LIST="`$FACILITIES_DIR/$FACILITY list`"
 	STATUS="`$FACILITIES_DIR/$FACILITY status`"
-	[ -n "${FACILITY##_*}" ] || FACILITY="${FACILITY//_//}"
-	printf "%-15s %-15s (%s)\n" "$FACILITY" "$STATUS" "$LIST"
-done
+	if [ "$STATUS" != "$*" ]; then
+		fatal "$REQUESTED_FACILITY: Requested $*, got $STATUS"
+	fi
+	exit 0
+else
+	fatal "No such facility: $FACILITY"
+fi
