@@ -34,7 +34,7 @@ install -p -m755 control{,-dump,-restore} %buildroot%_sbindir/
 install -p -m755 functions %buildroot%_sysconfdir/control.d/
 mkdir -p -m700 %buildroot/var/run/control
 install -p -m644 control{,-dump,-restore}.8 %buildroot%_man8dir/
-install -pD -m644 control.macros %buildroot%_sysconfdir/rpm/macros.d/control
+install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 
 # Generate shell functions provides list.
 (
@@ -46,8 +46,8 @@ install -pD -m644 control.macros %buildroot%_sysconfdir/rpm/macros.d/control
 ) >%buildroot%_controldir/.provides.sh
 
 %files
-%config %_sysconfdir/rpm/macros.d/control
 %_sbindir/control*
+%_rpmmacrosdir/control
 %config %_sysconfdir/control.d
 /var/run/control
 %_man8dir/*
