@@ -14,21 +14,13 @@ array_count() # private
 
 define() # private
 {
-	local arg="$3"
-	if [ -z "${arg##*[\"\$\`\\]*}" ]; then
-		arg=$(printf %s "$arg" | sed -e 's/["$`\]/\\&/g')
-	fi
-	eval "$1_$2=\"$arg\""
+	eval "$1_$2=\"\$3\""
 }
 
 define_array() # private
 {
-	local arg="$3"
-	if [ -z "${arg##*[\"\$\`\\]*}" ]; then
-		arg=$(printf %s "$arg" | sed -e 's/["$`\]/\\&/g')
-	fi
 	array_count n "ARRAY_$1_$2"
-	eval "$1_$2_$n=\"$arg\"; ARRAY_$1_$2=\"\$ARRAY_$1_$2 $1_$2_$n\""
+	eval "$1_$2_$n=\"\$3\"; ARRAY_$1_$2=\"\$ARRAY_$1_$2 $1_$2_$n\""
 }
 
 lookup() # private
