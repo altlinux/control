@@ -1,5 +1,5 @@
 Name: control
-Version: 0.7.4
+Version: 0.7.5
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -54,6 +54,13 @@ install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 %_man8dir/*
 
 %changelog
+* Mon Jun 28 2010 Dmitry V. Levin <ldv@altlinux.org> 0.7.5-alt1
+- Added --help and --version options (closes: #16712).
+- Optimized functions for speed (legion@).
+- Changed code to use "sed -i" instead of "subst".
+- Relocated control macro file from /etc/rpm/macros.d/ to
+  /usr/lib/rpm/macros.d/
+
 * Tue Sep 18 2007 Dmitry V. Levin <ldv@altlinux.org> 0.7.4-alt1
 - functions/stat_file: Speed up.
 
