@@ -10,7 +10,8 @@ Packager: Dmitry V. Levin <ldv@altlinux.org>
 
 Source: %name-%version.tar
 
-Requires: %__subst
+# due to sed -i support
+Requires: sed >= 1:4.1.1
 
 %define _controldir %_sysconfdir/control.d/facilities
 

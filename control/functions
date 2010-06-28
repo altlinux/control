@@ -209,7 +209,7 @@ control_subst()
 				return 1
 			fi
 			[ "$(control_subst_status "$FILE")" != "$REQUEST" ] || continue
-			subst "$SUBST" "$FILE" || return 1
+			sed -i -e "$SUBST" -- "$FILE" || return 1
 		done
 		;;
 	esac
