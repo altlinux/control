@@ -6,7 +6,6 @@ Summary: A set of scripts to control installed system facilities
 License: GPL
 Group: System/Base
 BuildArch: noarch
-Packager: Dmitry V. Levin <ldv@altlinux.org>
 
 Source: %name-%version.tar
 
@@ -24,16 +23,15 @@ to let you enable, disable, or configure the facility independently
 from package installation.
 
 %prep
-%setup -q
+%setup
 
 %build
 sed -i s/@VERSION@/%version-%release/ control
 
 %install
-mkdir -p %buildroot{%_controldir,%_sbindir,%_man8dir}
+mkdir -p %buildroot{%_controldir,%_sbindir,%_man8dir,/var/run/control}
 install -p -m755 control{,-dump,-restore} %buildroot%_sbindir/
 install -p -m755 functions %buildroot%_sysconfdir/control.d/
-mkdir -p %buildroot/var/run/control
 install -p -m644 control{,-dump,-restore}.8 %buildroot%_man8dir/
 install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 
@@ -50,7 +48,7 @@ install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 %_sbindir/control*
 %_rpmmacrosdir/control
 %config %_sysconfdir/control.d
-%attr(700,root,root) %ghost /var/run/control
+%attr(0700,root,root) %ghost /var/run/control/
 %_man8dir/*
 
 %changelog
