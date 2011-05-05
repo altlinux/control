@@ -50,7 +50,7 @@ install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 %_sbindir/control*
 %_rpmmacrosdir/control
 %config %_sysconfdir/control.d
-%attr(700,root,root) /var/run/control
+%attr(700,root,root) %ghost /var/run/control
 %_man8dir/*
 
 %changelog
