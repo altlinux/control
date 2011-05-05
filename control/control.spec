@@ -1,5 +1,5 @@
 Name: control
-Version: 0.7.5
+Version: 0.7.6
 Release: alt1
 
 Summary: A set of scripts to control installed system facilities
@@ -52,6 +52,14 @@ install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 %_man8dir/*
 
 %changelog
+* Thu May 05 2011 Dmitry V. Levin <ldv@altlinux.org> 0.7.6-alt1
+- control_subst: changed to use "sed -i --follow-symlinks"
+  instead of plain "sed -i".
+- /var/run/control/:
+  + changed permissions from 0755 to 0700;
+  + packaged as %%ghost;
+  + control-dump: changed to create /var/run/control/ (closes: #25575).
+
 * Mon Jun 28 2010 Dmitry V. Levin <ldv@altlinux.org> 0.7.5-alt1
 - Added --help and --version options (closes: #16712).
 - Optimized functions for speed (legion@).
