@@ -1,6 +1,8 @@
 #!/bin/sh
 
 STATUS_DIR=/var/run/control
+umask 077
+mkdir -p "$STATUS_DIR"
 
 for FACILITY in "$@"; do
 	FACILITY="${FACILITY//\//_}"
