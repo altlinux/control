@@ -33,7 +33,7 @@ sed -i s/@VERSION@/%version-%release/ control
 mkdir -p %buildroot{%_controldir,%_sbindir,%_man8dir}
 install -p -m755 control{,-dump,-restore} %buildroot%_sbindir/
 install -p -m755 functions %buildroot%_sysconfdir/control.d/
-mkdir -p -m700 %buildroot/var/run/control
+mkdir -p %buildroot/var/run/control
 install -p -m644 control{,-dump,-restore}.8 %buildroot%_man8dir/
 install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 
@@ -50,7 +50,7 @@ install -pD -m644 control.macros %buildroot%_rpmmacrosdir/control
 %_sbindir/control*
 %_rpmmacrosdir/control
 %config %_sysconfdir/control.d
-/var/run/control
+%attr(700,root,root) /var/run/control
 %_man8dir/*
 
 %changelog
