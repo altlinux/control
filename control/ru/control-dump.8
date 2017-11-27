@@ -1,0 +1,54 @@
+.\" -*- mode: troff; coding: utf8 -*-
+.TH CONTROL-DUMP 8 "18 April 2003" "Openwall Project"
+.hy 0
+.ad l
+.SH НАЗВАНИЕ
+\fBcontrol-dump\fR, \fBcontrol-restore\fR \- сохранение и восстановление
+состояния системных компонентов
+.SH ФОРМАТ ВЫЗОВА
+.ad b
+.B control-dump
+.RI [ FACILITY ...]
+.br
+.B control-restore
+.RI [ FACILITY ...]
+.SH ОПИСАНИЕ
+.B control-dump
+и
+.B control-restore
+предназначены для использования в предустановочных и постустановочных
+скриптах дистрибутивных пакетов и позволяют, соответственно, сохранить
+параметры перед обновлением и восстановить их после обновления.
+.SH ФАЙЛЫ
+.ad l
+.in +4
+.ti -4
+.IR /var/run/control/ *
+\- файлы, создаваемые
+.BR control-dump
+для последующего использования
+.B control-restore
+.br
+.ti -4
+.I /etc/control.d/facilities/
+\- каталог со скриптами управления компонентами для
+.BR control (8)
+.br
+.ti -4
+.I /etc/control.d/functions
+\- библиотека общих функций для этих скриптов
+.in -4
+.ad b
+.SH ИСТОРИЯ СОЗДАНИЯ
+.B control-dump
+и
+.B control-restore
+были разработаны для и впервые появились в ALT Linux Sisyphus и
+Openwall GNU/*/Linux 1.0
+.SH АВТОРЫ
+Dmitry V. Levin <ldv@altlinux.org>
+.br
+Solar Designer <solar@owl.openwall.com>
+.SH СМ. ТАКЖЕ
+.BR chkconfig (8),
+.BR control (8)
