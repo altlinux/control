@@ -51,7 +51,8 @@ new_fmode()
 	register "$1"
 	define NAME_TO_FMODE "$1" "$2"
 	define NAME_TO_OWNER "$1" "$3:$4"
-	define FMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
+	define NAME_TO_CAPS "$1" "${5-}"
+	define_array FMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
 }
 
 new_subst()
@@ -108,22 +109,26 @@ control_help()
 
 control_fmode_status() # private
 {
-	local FILE="$1" STAT NAME=
+	local FILE="$1" STAT NAME= ARRAY= ELEM= CAPS=
 
 	STAT="$(stat_file "$FILE")"
 	if validate "$STAT"; then
-		lookup NAME FMODE_OWNER_TO_NAME "$STAT"
+		lookup_array ARRAY FMODE_OWNER_TO_NAME "$STAT"
+		for ELEM in $ARRAY; do
+			eval "NAME=\"\$$ELEM\""
+			lookup CAPS NAME_TO_CAPS "$NAME"
+			if setcap -q -v "$CAPS" "$FILE"; then
+				printf "%s\\n" "$NAME"
+				return
+			fi
+		done
 	fi
-	if [ -n "$NAME" ]; then
-		printf %s\\n "$NAME"
-	else
-		echo "unknown"
-	fi
+	echo "unknown"
 }
 
 control_fmode()
 {
-	local FILE="$1" REQUEST="$2" FMODE= OWNER=
+	local FILE="$1" REQUEST="$2" FMODE= OWNER= CAPS=
 
 	case "$REQUEST" in
 	help|'help '*)
@@ -142,6 +147,7 @@ control_fmode()
 		if validate "$REQUEST"; then
 			lookup FMODE NAME_TO_FMODE "$REQUEST"
 			lookup OWNER NAME_TO_OWNER "$REQUEST"
+			lookup CAPS NAME_TO_CAPS "$REQUEST"
 		fi
 		if [ -z "$FMODE" -o -z "$OWNER" ]; then
 			echo_error "Invalid mode: $REQUEST"
@@ -150,7 +156,14 @@ control_fmode()
 		if [ "$(control_fmode_status "$FILE")" = "$REQUEST" ]; then
 			return
 		fi
+		# NOTE: chown will clear all capability sets for the file.
+		# See chown(2) for details.
 		chown "$OWNER" "$FILE" && chmod "$FMODE" "$FILE" || return 1
+		[ -n "$CAPS" ] || return 0
+		if setcap -q -v "$CAPS" "$FILE"; then
+			return
+		fi
+		setcap -q "$CAPS" "$FILE" || return 1
 		;;
 	esac
 }
