@@ -92,7 +92,7 @@ control_list()
 
 control_help()
 {
-  	local NAME VALUE SEARCH_LIST
+	local NAME= VALUE= SEARCH_LIST=
 
 	if [ -n "$1" ]; then
 		SEARCH_LIST="$*"
@@ -109,7 +109,7 @@ control_help()
 
 control_fmode_status() # private
 {
-	local FILE="$1" STAT NAME= ARRAY= ELEM= CAPS=
+	local FILE="$1" STAT= NAME= ARRAY= ELEM= CAPS=
 
 	STAT="$(stat_file "$FILE")"
 	if validate "$STAT"; then
@@ -170,7 +170,7 @@ control_fmode()
 
 control_subst_status() # private
 {
-	local FILE="$1" ARRAY ELEM FOUND NAME REGEX
+	local FILE="$1" ARRAY= ELEM= FOUND= NAME= REGEX=
 
 	for NAME in $NAME_LIST; do
 		FOUND=
@@ -192,7 +192,7 @@ control_subst_status() # private
 
 control_subst()
 {
-	local FILE="$1" REQUEST="$2" ARRAY= ELEM SUBST=
+	local FILE="$1" REQUEST="$2" ARRAY= ELEM= SUBST=
 
 	case "$REQUEST" in
 	help|'help '*)
