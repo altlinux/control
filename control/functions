@@ -52,6 +52,10 @@ new_fmode()
 	define NAME_TO_FMODE "$1" "$2"
 	define NAME_TO_OWNER "$1" "$3:$4"
 	define NAME_TO_CAPS "$1" "${5-}"
+	# We would like to use
+	# define FMODE_OWNER_CAPS_TO_NAME "$2_$3_$4_$5" "$1"
+	# but we cannot include capabilities string $5 in a variable's name.
+	# Workaround this limitation by using an array without $5 in its name.
 	define_array FMODE_OWNER_TO_NAME "$2_$3_$4" "$1"
 }
 
