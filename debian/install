@@ -1,0 +1,2 @@
+control/control{,-dump,-restore} /usr/sbin/
+control/functions /etc/control.d/

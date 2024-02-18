@@ -1,0 +1,15 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: control
+Upstream-Contact: ALT Linux Team development <devel@lists.altlinux.org>
+Source: https://git.altlinux.org/gears/c/control.git
+
+Files: *
+Copyright:
+  Copyright (c) Solar Designer <solar@owl.openwall.com> 2002
+  Copyright (c) Dmitry V. Levin <ldv@altlinux.org>      2003-2017
+  Copyright (c) Mikhail Efremov <sem@altlinux.org>      2018
+License: GPL-2.0+
+
+Files: debian/*
+Copyright: 2024 Andrey Limachko and Evgeny Sinelnikov
+License: GPL-2.0+
